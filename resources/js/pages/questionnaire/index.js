@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { lazy } from 'react';
+
+const Heading = lazy(() => import('./Heading'));
+const Questions = lazy(() => import('./Questions'));
 
 export default function Questionanire() {
 	return (
-		<div>
-			<h1>Welcome!</h1>
-		</div>
+		<section className="questionnaire-page">
+			<Heading />
+			<Questions />
+		</section>
 	);
 }

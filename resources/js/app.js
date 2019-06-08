@@ -16,9 +16,10 @@ import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
-import Contact from './components/Contact';
 
 const Home = lazy(() => import('./pages/home'));
+const Contact = lazy(() => import('./components/Contact'));
+const Questionnaire = lazy(() => import('./pages/questionnaire'));
 const Blog = lazy(() => import('./pages/blog'));
 const Article = lazy(() => import('./pages/blog/Article'));
 const AddArticle = lazy(() => import('./pages/blog/AddArticle'));
@@ -45,6 +46,11 @@ const App = () => {
 				<Navbar />
 				<Switch>
 					<Route exact path="/" component={Home} />
+					<Route
+						exact
+						path="/export-intelligence-questionnaire"
+						component={Questionnaire}
+					/>
 					<CategoriesContext.Provider value={categories}>
 						<Route exact path="/blog" component={Blog} />
 						<Route exact path="/blog/new" component={AddArticle} />

@@ -1,0 +1,40 @@
+.questionnaire-page {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+
+  h1,
+  h2 {
+    text-align: center;
+  }
+
+  &__questionnaire {
+    background: $blue;
+    color: $text-white;
+    margin-top: 2rem;
+
+    .question {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+
+      h3 {
+        font-size: 1.75rem;
+      }
+
+      p {
+        cursor: pointer;
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+      }
+
+      &__answer {
+        border: 1px solid $border-grey;
+        border-radius: 4px;
+        padding: 1rem;
+
+        p {
+          cursor: unset;
+        }
+      }
+    }
+  }
+}
