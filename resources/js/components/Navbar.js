@@ -24,7 +24,7 @@ export default function Navbar() {
 				</section>
 				<section className="navbar__links">
 					<Link to="/">Home</Link>
-					<Link to="/">Services</Link>
+					<Link to="/export-intelligence-questionnaire">Questionnaire</Link>
 					<Link to="/">Packages</Link>
 					<Link to="/blog">Blog</Link>
 					<a href="#contact">Contact</a>

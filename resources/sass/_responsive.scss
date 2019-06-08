@@ -58,5 +58,24 @@
         display: block;
       }
     }
+
+    &__brand {
+      a {
+        min-width: unset;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .contact {
+    &-sections {
+      grid-template-columns: 1fr !important;
+      grid-column-gap: unset !important;
+      grid-template-rows: 1fr 1fr !important;
+      grid-row-gap: 1rem;
+    }
   }
 }
