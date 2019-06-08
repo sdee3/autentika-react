@@ -8,9 +8,10 @@ export default function Navbar() {
 				<div className="navbar__brand">
 					<Link to="/">
 						<img
-							alt="KickAssGrowth navbar logo"
-							src="https://kickassgrowth.com/wp-content/uploads/2019/01/logo-2.png"
+							alt="Autentika Global navbar logo"
+							src="https://res.cloudinary.com/sdee3-com/image/upload/v1560004828/autentika/autentika-logo.png"
 						/>
+						<p>Autentika Global</p>
 					</Link>
 				</div>
 				<input type="checkbox" id="nav-check" />

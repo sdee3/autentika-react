@@ -1,4 +1,115 @@
 .home-page {
-  margin-top: 2rem;
   margin-bottom: 5rem;
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  &__main-img {
+    background-image: url("https://res.cloudinary.com/sdee3-com/image/upload/v1560007817/autentika/Screenshot_from_2019-06-08_17-29-58.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50vh;
+
+    .container {
+      color: $white;
+      padding-top: 13%;
+      text-align: center;
+      width: 100%;
+
+      h1 {
+        font-size: 2.5rem;
+      }
+    }
+  }
+
+  &__about-us {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .categories,
+  .services {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 2rem;
+    margin-top: 2.5rem;
+  }
+
+  &__services {
+    background: $text-white;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    text-align: center;
+  }
+
+  &__promo {
+    background-image: url("https://res.cloudinary.com/sdee3-com/image/upload/v1560004610/autentika/img2.jpg");
+    height: 30vh;
+
+    .container {
+      color: $text-white;
+      height: 100%;
+      padding-top: 2rem;
+      text-align: center;
+      width: 100%;
+
+      .button {
+        margin-top: 2rem;
+      }
+    }
+  }
+
+  &__clients {
+    background-image: url("https://res.cloudinary.com/sdee3-com/image/upload/v1560004656/autentika/img11.jpg");
+    height: 30vh;
+
+    .container {
+      color: $text-white;
+      height: 100%;
+      padding-top: 2rem;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  &__contact {
+    .container {
+      width: 100%;
+
+      h2 {
+        text-align: center;
+      }
+
+      .contact-sections {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 2rem;
+
+        form {
+          display: flex;
+          flex-direction: column;
+
+          input,
+          textarea {
+            border: 1px solid $border-grey;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+          }
+
+          input {
+            min-height: 40px;
+            width: 100%;
+          }
+
+          textarea {
+            padding-top: 0.5rem;
+          }
+        }
+      }
+    }
+  }
 }

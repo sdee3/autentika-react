@@ -11,4 +11,10 @@
   &:hover {
     outline: none;
   }
+
+  &--orange {
+    background: $orange;
+    border: unset;
+    font-weight: bold;
+  }
 }
