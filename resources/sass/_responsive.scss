@@ -1,4 +1,24 @@
 @media (max-width: 769px) {
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  h2 {
+    font-size: 1.3rem !important;
+  }
+
+  h3 {
+    font-size: 1rem !important;
+  }
+
+  .container {
+    width: unset !important;
+  }
+
+  .radio-container {
+    font-size: 1rem;
+  }
+
   .navbar {
     display: block;
 
@@ -56,6 +76,10 @@
 
       a {
         display: block;
+
+        &:first-of-type {
+          padding: 0.5rem 1rem;
+        }
       }
     }
 
@@ -70,12 +94,40 @@
     }
   }
 
+  .home-page {
+    &__questionnaire-promo,
+    &__promo {
+      height: 40vh;
+
+      .container {
+        padding-top: 0.5rem;
+      }
+    }
+
+    .categories,
+    .services {
+      grid-template-columns: 1fr;
+      grid-column-gap: unset;
+      grid-template-rows: 1fr 1fr 1fr;
+    }
+  }
+
   .contact {
     &-sections {
       grid-template-columns: 1fr !important;
       grid-column-gap: unset !important;
-      grid-template-rows: 1fr 1fr !important;
+      grid-template-rows: 1fr 200px !important;
       grid-row-gap: 1rem;
+
+      form {
+        max-width: 90vw;
+      }
+    }
+  }
+
+  .question {
+    p {
+      font-size: 1rem !important;
     }
   }
 }
