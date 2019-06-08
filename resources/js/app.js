@@ -16,6 +16,7 @@ import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
+import Contact from './components/Contact';
 
 const Home = lazy(() => import('./pages/home'));
 const Blog = lazy(() => import('./pages/blog'));
@@ -52,6 +53,7 @@ const App = () => {
 					</CategoriesContext.Provider>
 					<Route component={Page404} />
 				</Switch>
+				<Contact />
 				<Footer />
 			</Suspense>
 		</Router>

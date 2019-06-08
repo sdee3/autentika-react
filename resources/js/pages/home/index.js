@@ -1,10 +1,10 @@
 import React, { lazy } from 'react';
 
+const QuestionnairePromo = lazy(() => import('./QuestionnairePromo'));
 const AboutUs = lazy(() => import('./AboutUs'));
 const Services = lazy(() => import('./Services'));
 const Promo = lazy(() => import('./Promo'));
 const Clients = lazy(() => import('./Clients'));
-const Contact = lazy(() => import('./Contact'));
 
 export default function Home() {
 	return (
@@ -20,6 +20,7 @@ export default function Home() {
 					</h3>
 				</div>
 			</section>
+			<QuestionnairePromo />
 			<AboutUs />
 			<Services />
 			<Promo
@@ -28,7 +29,6 @@ export default function Home() {
 					Autentika!"
 			/>
 			<Clients />
-			<Contact />
 		</section>
 	);
 }
