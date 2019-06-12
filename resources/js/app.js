@@ -24,6 +24,10 @@ const Blog = lazy(() => import('./pages/blog'));
 const Article = lazy(() => import('./pages/blog/Article'));
 const AddArticle = lazy(() => import('./pages/blog/AddArticle'));
 const Edit = lazy(() => import('./pages/blog/Edit'));
+const Services = lazy(() => import('./pages/services'));
+const ExportMarketIntel = lazy(() =>
+	import('./pages/services/ExportMarketIntel')
+);
 const Page404 = lazy(() => import('./pages/404'));
 const Navbar = lazy(() => import('./components/Navbar'));
 const Footer = lazy(() => import('./components/Footer'));
@@ -52,6 +56,12 @@ const App = () => {
 						component={Questionnaire}
 					/>
 					<CategoriesContext.Provider value={categories}>
+						<Route exact path="/services" component={Services} />
+						<Route
+							exact
+							path="/services/export-market-intelligence"
+							component={ExportMarketIntel}
+						/>
 						<Route exact path="/blog" component={Blog} />
 						<Route exact path="/blog/new" component={AddArticle} />
 						<Route exact path="/blog/:slug" component={Article} />

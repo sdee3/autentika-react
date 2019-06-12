@@ -21,6 +21,10 @@ export default function Contact() {
 					</section>
 					<section>
 						<h3>Contact Info</h3>
+						<p>Autentika Global</p>
+						<p>Karadjordjeva 175/16</p>
+						<p>Valjevo</p>
+						<p>Serbia</p>
 					</section>
 				</section>
 			</div>

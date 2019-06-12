@@ -1,0 +1,23 @@
+.services-page {
+  background-image: url("https://res.cloudinary.com/sdee3-com/image/upload/v1560004610/autentika/img2.jpg");
+  color: $text-white;
+  min-height: 50vh;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+
+  ul {
+    li {
+      a {
+        color: unset;
+        font-size: 1.2rem;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.service {
+  border-top: 5px solid $orange;
+  border-bottom: 5px solid $orange;
+  padding-bottom: 3rem;
+}
