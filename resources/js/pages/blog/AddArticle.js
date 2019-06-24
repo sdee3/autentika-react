@@ -22,9 +22,7 @@ export default function AddArticle() {
 		category_id: 0,
 		slug: '',
 		content: '',
-		cover_url: '',
-		author_name: '',
-		author_url: ''
+		cover_url: ''
 	});
 
 	const categoriesContext = React.useContext(CategoriesContext);
@@ -146,20 +144,6 @@ export default function AddArticle() {
 						}
 						placeholder="Cover Image URL"
 						value={article.cover_url}
-					/>
-					<input
-						onChange={e =>
-							setArticle({ ...article, author_name: e.target.value })
-						}
-						placeholder="Author Name (Not Required)"
-						value={article.author_name}
-					/>
-					<input
-						onChange={e =>
-							setArticle({ ...article, author_url: e.target.value })
-						}
-						placeholder="Author Url (Not Required)"
-						value={article.author_url}
 					/>
 					<ReactQuill
 						formats={quillFormats}

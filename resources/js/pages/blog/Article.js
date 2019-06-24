@@ -70,22 +70,7 @@ export default function Article({ match }) {
 					</section>
 					<h1 className="blog-post__title">{article.title}</h1>
 					<section className="blog-post__author-category">
-						<span className="article-author">
-							{article.author_name && article.author_url ? (
-								<>
-									<span>by {article.author_name}</span>
-									<div className="article-author__url">
-										<a
-											href={article.author_url}
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											<i className="fab fa-linkedin-in link-icon" />
-										</a>
-									</div>
-								</>
-							) : null}
-						</span>
+						<span className="article-author" />
 						<span className="label">{category}</span>
 					</section>
 					<section

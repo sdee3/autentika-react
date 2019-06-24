@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function ArticleCard({ article, category }) {
-	const { caption, cover_url, title, slug, author_name } = article;
+	const { caption, cover_url, title, slug } = article;
 
 	return (
 		<Link className="blog-post__link" to={`/blog/${slug}`}>
@@ -15,9 +15,7 @@ export default function ArticleCard({ article, category }) {
 				<h3 className="blog-post__title">{title}</h3>
 				<p className="">{caption}</p>
 				<section className="blog-post__category container">
-					<span className="author">
-						{author_name !== null ? `by ${author_name}` : null}
-					</span>
+					<span className="author" />
 					<span className="category-label">{category}</span>
 				</section>
 			</section>
