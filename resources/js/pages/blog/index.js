@@ -37,7 +37,9 @@ export default function Blog() {
 				setBlogPosts(originalBlogPosts);
 				setOriginalBlogPosts([]);
 			} else {
-				setBlogPosts(originalBlogPosts);
+				if (originalBlogPosts.length) {
+					setBlogPosts(originalBlogPosts);
+				}
 			}
 		}
 	};
