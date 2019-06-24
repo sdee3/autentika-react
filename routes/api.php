@@ -23,5 +23,13 @@ Route::post('/article', 'ArticleController@submit');
 Route::put('/article/{slug}', 'ArticleController@update');
 Route::delete('/article/{slug}', 'ArticleController@delete');
 
+Route::post('/upload', 'BlogController@upload');
+
 Route::get('/categories', 'CategoryController@fetch');
 Route::get('/categories/{id}', 'CategoryController@fetch');
+Route::post('/categories', 'CategoryController@store');
+Route::put('/categories', 'CategoryController@update');
+Route::delete('/categories/{id}', 'CategoryController@delete');
+
+Route::post('/admin-login', 'BlogController@handleAdminLogin');
+Route::post('/validate-cookie', 'BlogController@validateCookie');

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import axios from 'axios';
+
 const quillModules = {
 	toolbar: [
 		[{ header: [1, 2, false] }],
@@ -28,6 +30,88 @@ const quillFormats = [
 	'link',
 	'image'
 ];
+
+const createCookie = (cookieName, cookieValue, daysToExpire) => {
+	const date = new Date();
+	date.setTime(date.getTime() + daysToExpire * 24 * 60 * 60 * 1000);
+	document.cookie =
+		cookieName + '=' + cookieValue + '; expires=' + date.toGMTString();
+};
+
+const fetchCookie = cookieName => {
+	let name = cookieName + '=';
+	let allCookieArray = document.cookie.split(';');
+
+	for (let i = 0; i < allCookieArray.length; i++) {
+		let temp = allCookieArray[i].trim();
+
+		if (temp.indexOf(name) === 0) {
+			return temp.substring(name.length, temp.length);
+		}
+	}
+
+	return '';
+};
+
+const isAuthenticated = () => {
+	return fetchCookie('x-auth').length > 0;
+};
+
+const validateCookie = () => {
+	return new Promise((resolve, reject) => {
+		axios
+			.post('/api/validate-cookie', { cookie: fetchCookie('x-auth') })
+			.then(res => resolve(res.data))
+			.catch(err => reject(err.response));
+	});
+};
+
+const validateArticle = article => {
+	return new Promise((resolve, reject) => {
+		if (article.title.length) {
+			if (article.caption.length) {
+				if (article.slug.length) {
+					if (article.content.length) {
+						if (article.cover_url.length) {
+							return resolve();
+						} else {
+							reject('Missing cover image URL in the form!');
+						}
+					} else {
+						reject('Missing content in the form!');
+					}
+				} else {
+					reject('Missing slug in the form!');
+				}
+			} else {
+				reject('Missing caption in the form!');
+			}
+		} else {
+			reject('Missing title in the form!');
+		}
+	});
+};
+
+const areInputsValid = (name, email, message) => {
+	if (name.length) {
+		if (email.length) {
+			let re = /\S+@\S+\.\S+/;
+			if (re.test(email)) {
+				if (message.length) {
+					return true;
+				} else {
+					return 'The message field is required, but missing! Please try again.';
+				}
+			} else {
+				return 'The email address is invalid! Please try again.';
+			}
+		} else {
+			return 'The email address field is required, but missing! Please try again.';
+		}
+	} else {
+		return 'The name field is required, but missing! Please try again.';
+	}
+};
 
 const questionnaireAnswers = {
 	q11: (
@@ -319,4 +403,14 @@ const questionnaireAnswers = {
 	)
 };
 
-export { quillFormats, quillModules, questionnaireAnswers };
+export {
+	areInputsValid,
+	isAuthenticated,
+	fetchCookie,
+	createCookie,
+	validateCookie,
+	validateArticle,
+	quillFormats,
+	quillModules,
+	questionnaireAnswers
+};

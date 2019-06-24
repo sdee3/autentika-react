@@ -1,10 +1,18 @@
 import React, { lazy } from 'react';
 import { Link } from 'react-router-dom';
-import { quillFormats, quillModules } from '../../Helpers';
+import {
+	quillFormats,
+	quillModules,
+	isAuthenticated,
+	validateCookie,
+	validateArticle
+} from '../../Helpers';
 import axios from 'axios';
-import { CategoriesContext } from '../../app';
+import { AlertContext, CategoriesContext } from '../../app';
+import Page404 from '../404';
 
 const Breadcrumbs = lazy(() => import('../../components/Breadcrumbs'));
+const Category = lazy(() => import('../../components/Category'));
 const ReactQuill = lazy(() => import('react-quill'));
 
 export default function AddArticle() {
@@ -14,27 +22,78 @@ export default function AddArticle() {
 		category_id: 0,
 		slug: '',
 		content: '',
-		cover_url: ''
+		cover_url: '',
+		author_name: '',
+		author_url: ''
 	});
 
-	const categories = React.useContext(CategoriesContext);
+	const categoriesContext = React.useContext(CategoriesContext);
+	const setAlert = React.useContext(AlertContext);
 
-	const handleChange = value => setArticle({ ...article, content: value });
+	const handleChange = value => {
+		if (value.indexOf('data:image') > 0) {
+			let valuesArray = value.split('</p>');
+
+			for (let i = 0; i < valuesArray.length; i++) {
+				if (valuesArray[i].indexOf('data:image') > 0) {
+					let imgStringArray =
+						valuesArray[i].split(`<p><img src="data:`) ||
+						valuesArray[i].split(`<img src="data:`);
+
+					if (imgStringArray[1]) {
+						const sanitizedImgData = imgStringArray[1].split(`">`)[0];
+
+						axios
+							.post('/api/upload', { data: sanitizedImgData })
+							.then(response => {
+								valuesArray[i] = `<img src="/${response.data}" />`;
+								var output = valuesArray.join('</p>');
+
+								setArticle({ ...article, content: output });
+							})
+							.catch(err => setAlert(err, 'danger'));
+					}
+				}
+			}
+		} else {
+			setArticle({ ...article, content: value });
+		}
+	};
 
 	const submitArticle = () => {
-		axios
-			.post('/api/article', article)
-			.then(() => (window.location.href = '/blog'))
-			.catch(err => console.error(err.response.data.message));
+		validateCookie()
+			.then(() =>
+				validateArticle(article)
+					.then(() => {
+						axios
+							.post('/api/article', article)
+							.then(() => {
+								window.location.href = '/blog';
+								axios.get('/api/sendEmails');
+							})
+							.catch(err => setAlert(err.response.data.message, 'danger'));
+					})
+					.catch(() =>
+						setAlert('All fields are required! Please try again.', 'danger')
+					)
+			)
+			.catch(() => {
+				alert(
+					'Error validating the cookie. Click OK to be redirected to the login page'
+				);
+				window.location.href = '/blog/admin';
+			});
 	};
 
 	const handleRadioChange = e => {
-		const newCategory = categories.filter(c => c.name === e.target.value)[0];
+		const newCategory = categoriesContext.categories.filter(
+			c => c.name === e.target.value
+		)[0];
 
 		setArticle({ ...article, category_id: newCategory.id });
 	};
 
-	return (
+	return isAuthenticated() ? (
 		<>
 			<Breadcrumbs
 				page={
@@ -57,18 +116,10 @@ export default function AddArticle() {
 					<div className="edit-article__inputs--category-select">
 						<span>Category:</span>
 						<section className="edit-article__category-checkboxes">
-							{categories.map(category => (
-								<label className="category__container" key={category.id}>
-									{category.name}
-									<input
-										name="radio"
-										onChange={handleRadioChange}
-										type="radio"
-										value={category.name}
-									/>
-									<span className="category__checkmark" />
-								</label>
-							))}
+							<Category
+								categories={categoriesContext.categories}
+								handleRadioChange={handleRadioChange}
+							/>
 						</section>
 					</div>
 					<input
@@ -96,6 +147,20 @@ export default function AddArticle() {
 						placeholder="Cover Image URL"
 						value={article.cover_url}
 					/>
+					<input
+						onChange={e =>
+							setArticle({ ...article, author_name: e.target.value })
+						}
+						placeholder="Author Name (Not Required)"
+						value={article.author_name}
+					/>
+					<input
+						onChange={e =>
+							setArticle({ ...article, author_url: e.target.value })
+						}
+						placeholder="Author Url (Not Required)"
+						value={article.author_url}
+					/>
 					<ReactQuill
 						formats={quillFormats}
 						modules={quillModules}
@@ -106,5 +171,7 @@ export default function AddArticle() {
 				</form>
 			</section>
 		</>
+	) : (
+		<Page404 />
 	);
 }

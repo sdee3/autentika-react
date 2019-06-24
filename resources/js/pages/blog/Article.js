@@ -1,24 +1,40 @@
 import React, { lazy } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { isAuthenticated, validateCookie } from '../../Helpers';
 
 const Breadcrumbs = lazy(() => import('../../components/Breadcrumbs'));
 
 export default function Article({ match }) {
 	const [article, setArticle] = React.useState({});
+	const [category, setCategory] = React.useState('');
 
 	React.useEffect(() => {
-		axios
-			.get(`/api/article/${match.params.slug}`)
-			.then(res => setArticle(res.data))
-			.catch(err => console.error(err.response.data));
+		if (match.params.slug !== 'new') {
+			axios
+				.get(`/api/article/${match.params.slug}`)
+				.then(res => {
+					setArticle(res.data);
+					setCategory(res.data.category.name);
+				})
+				.catch(err => console.error(err.response));
+		}
 	}, []);
 
 	const deleteArticle = () => {
 		if (confirm('Are you sure you want to delete this article?')) {
-			axios
-				.delete(`/api/article/${match.params.slug}`)
-				.then(() => (window.location.href = '/blog'));
+			validateCookie()
+				.then(() =>
+					axios
+						.delete(`/api/article/${match.params.slug}`)
+						.then(() => (window.location.href = '/blog'))
+				)
+				.catch(() => {
+					alert(
+						'Error validating the cookie. Click OK to be redirected to the login page'
+					);
+					window.location.href = '/blog/admin';
+				});
 		}
 	};
 
@@ -35,14 +51,16 @@ export default function Article({ match }) {
 			/>
 			<section className="blog-page container">
 				<section className="blog-post">
-					<div className="blog-post__top-buttons">
-						<Link to={`/blog/${match.params.slug}/edit`}>
-							<button className="button">Edit</button>
-						</Link>
-						<button className="button" onClick={deleteArticle}>
-							Delete Article
-						</button>
-					</div>
+					{isAuthenticated() ? (
+						<div className="blog-post__top-buttons">
+							<Link to={`/blog/${match.params.slug}/edit`}>
+								<button className="button">Edit</button>
+							</Link>
+							<button className="button" onClick={deleteArticle}>
+								Delete Article
+							</button>
+						</div>
+					) : null}
 					<section className="blog-post__image">
 						<img
 							alt={`${article.title} - Cover image`}
@@ -51,6 +69,25 @@ export default function Article({ match }) {
 						/>
 					</section>
 					<h1 className="blog-post__title">{article.title}</h1>
+					<section className="blog-post__author-category">
+						<span className="article-author">
+							{article.author_name && article.author_url ? (
+								<>
+									<span>by {article.author_name}</span>
+									<div className="article-author__url">
+										<a
+											href={article.author_url}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<i className="fab fa-linkedin-in link-icon" />
+										</a>
+									</div>
+								</>
+							) : null}
+						</span>
+						<span className="label">{category}</span>
+					</section>
 					<section
 						className="blog-post__text"
 						dangerouslySetInnerHTML={{ __html: article.content }}

@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Article;
+use Validator;
 
 class ArticleController extends Controller
 {
     public function fetch(string $slug = null)
     {
         if (!$slug) {
-            return Article::all();
+            return Article::with('category')->get();
         } else {
-            return Article::where('slug', $slug)->first();
+            return Article::where('slug', $slug)->with('category')->first();
         }
     }
 
@@ -34,15 +35,33 @@ class ArticleController extends Controller
     {
         $article = Article::where('slug', $slug)->first();
 
-        $article->title = $request->title;
-        $article->caption = $request->caption;
-        $article->category_id = $request->category_id;
-        $article->cover_url = $request->cover_url;
-        $article->slug = $request->slug;
-        $article->content = $request->content;
-        $article->save();
+        $validator = Validator::make(request()->all(), [
+            'title' => 'required',
+            'category_id' => 'required',
+            'caption' => 'required',
+            'content' => 'required',
+            'slug' => 'required|alpha_dash',
+            'cover_url' => 'required',
+        ]);
 
-        return response()->json('Article updated successfully!', 200);
+        if ($validator->fails()) {
+            $errors = array();
+            foreach ($validator->errors()->all() as $error) {
+                array_push($errors, $error);
+            }
+
+            return response()->json(["messages" => $errors], 422);
+        } else {
+            $article->title = $request->title;
+            $article->caption = $request->caption;
+            $article->category_id = $request->category_id;
+            $article->cover_url = $request->cover_url;
+            $article->slug = $request->slug;
+            $article->content = $request->content;
+            $article->update();
+
+            return response()->json('Article updated successfully!', 200);
+        }
     }
 
     public function delete(string $slug)

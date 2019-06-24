@@ -1,9 +1,16 @@
 import React, { lazy } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { quillFormats, quillModules } from '../../Helpers';
-import { CategoriesContext } from '../../app';
+import {
+	quillFormats,
+	quillModules,
+	isAuthenticated,
+	validateCookie
+} from '../../Helpers';
+import { AlertContext, CategoriesContext } from '../../app';
+import Page404 from '../404';
 
+const Category = lazy(() => import('../../components/Category'));
 const ReactQuill = lazy(() => import('react-quill'));
 
 export default function Edit({ match }) {
@@ -11,7 +18,8 @@ export default function Edit({ match }) {
 	const [originalTitle, setOriginalTitle] = React.useState('');
 	const [originalSlug, setOriginalSlug] = React.useState('');
 
-	const categories = React.useContext(CategoriesContext);
+	const categoriesContext = React.useContext(CategoriesContext);
+	const setAlert = React.useContext(AlertContext);
 
 	React.useEffect(() => {
 		const { slug } = match.params;
@@ -27,44 +35,75 @@ export default function Edit({ match }) {
 	}, []);
 
 	const handleChange = value => {
-		setArticle({ ...article, content: value });
+		if (value.indexOf('data:image') > 0) {
+			let valuesArray = value.split('</p>');
+
+			for (let i = 0; i < valuesArray.length; i++) {
+				if (valuesArray[i].indexOf('data:image') > 0) {
+					let imgStringArray =
+						valuesArray[i].split(`<p><img src="data:`) ||
+						valuesArray[i].split(`<img src="data:`);
+
+					if (imgStringArray[1]) {
+						const sanitizedImgData = imgStringArray[1].split(`">`)[0];
+
+						axios
+							.post('/api/upload', { data: sanitizedImgData })
+							.then(response => {
+								valuesArray[i] = `<img src="/${response.data}" />`;
+								var output = valuesArray.join('</p>');
+
+								setArticle({ ...article, content: output });
+							})
+							.catch(err => setAlert(err, 'danger'));
+					}
+				}
+			}
+		} else {
+			setArticle({ ...article, content: value });
+		}
 	};
 
 	const handleRadioChange = e => {
-		const newCategory = categories.filter(c => c.name === e.target.value)[0];
+		const newCategory = categoriesContext.categories.filter(
+			c => c.name === e.target.value
+		)[0];
 
 		setArticle({ ...article, category_id: newCategory.id });
 	};
 
 	const updateArticle = () => {
-		axios
-			.put(`/api/article/${originalSlug}`, article)
-			.then(() => (window.location.href = `/blog/${article.slug}`));
+		validateCookie()
+			.then(() =>
+				axios.put(`/api/article/${originalSlug}`, article).then(() => {
+					setAlert(
+						'Article updated successfully! You will soon be redirected back to the article...',
+						'success'
+					);
+
+					setTimeout(() => {
+						window.location.href = `/blog/${article.slug}`;
+					}, 2500);
+				})
+			)
+			.catch(err => setAlert(err.response.data.messages[0], 'danger'));
 	};
 
-	return Object.keys(article).length ? (
+	return Object.keys(article).length && isAuthenticated() ? (
 		<section className="blog-page container">
 			<Link to={`/blog/${article.slug}`}>
-				<button className="button">Go Back</button>
+				<button className="button btn-big">Go Back</button>
 			</Link>
-			<h1>You are editing {originalTitle}:</h1>
+			<h1 className="h1-small">You are editing {originalTitle}:</h1>
 			<section className="edit-article__inputs">
 				<div className="edit-article__inputs--category-select">
 					<span>Category:</span>
 					<section className="edit-article__category-checkboxes">
-						{categories.map(category => (
-							<label className="category__container" key={category.id}>
-								{category.name}
-								<input
-									defaultChecked={article.category_id === category.id}
-									name="radio"
-									onChange={handleRadioChange}
-									type="radio"
-									value={category.name}
-								/>
-								<span className="category__checkmark" />
-							</label>
-						))}
+						<Category
+							categories={categoriesContext.categories}
+							category_id={article.category_id}
+							handleRadioChange={handleRadioChange}
+						/>
 					</section>
 				</div>
 				<input
@@ -97,11 +136,13 @@ export default function Edit({ match }) {
 					value={article.content}
 				/>
 				<section className="text-center">
-					<button className="button" onClick={updateArticle}>
+					<button className="button btn-big" onClick={updateArticle}>
 						Save Changes
 					</button>
 				</section>
 			</section>
 		</section>
-	) : null;
+	) : (
+		<Page404 />
+	);
 }
