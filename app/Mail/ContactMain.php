@@ -41,10 +41,10 @@ class ContactMain extends Mailable
     return $this->from('noreply@autentikaglobal.com')
       ->view('emails.emailMain')
       ->with([
-        'name' => $this->form_data['contact']['firstName'],
-        'email' => $this->form_data['contact']['contactEmail'],
-        'msg' => $this->form_data['contact']['message']
+        'name' => $this->form_data['name'],
+        'email' => $this->form_data['email'],
+        'msg' => $this->form_data['message']
       ])
-      ->subject("Upit od posetioca: " . $this->form_data['contact']['firstName'] . " " . $this->form_data['contact']['firstName']);
+      ->subject("Upit od posetioca: " . $this->form_data['name']);
   }
 }
