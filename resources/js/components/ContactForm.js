@@ -1,5 +1,5 @@
 import React from 'react';
-import { areInputsValid } from '../../Helpers';
+import { areInputsValid } from '../Helpers';
 import axios from 'axios';
 import { AlertContext } from '../../app';
 
