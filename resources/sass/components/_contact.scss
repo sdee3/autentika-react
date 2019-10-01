@@ -14,6 +14,12 @@
       grid-template-columns: 1fr 1fr;
       grid-column-gap: 3rem;
 
+      a {
+        color: $cyan;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
       form {
         display: flex;
         flex-direction: column;

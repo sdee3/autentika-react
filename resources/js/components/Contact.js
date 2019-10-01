@@ -17,6 +17,13 @@ export default function Contact() {
 						<p>Karadjordjeva 175/16</p>
 						<p>Valjevo</p>
 						<p>Serbia</p>
+						<br />
+						<p>
+							Email us:{' '}
+							<a href="mailto:aleksandar@autentikaglobal.com">
+								aleksandar@autentikaglobal.com
+							</a>
+						</p>
 					</section>
 				</section>
 			</div>
