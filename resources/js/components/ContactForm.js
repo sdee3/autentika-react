@@ -1,7 +1,7 @@
 import React from 'react';
 import { areInputsValid } from '../Helpers';
 import axios from 'axios';
-import { AlertContext } from '../../app';
+import { AlertContext } from '../app';
 
 export default function Form() {
 	const [name, setName] = React.useState('');
