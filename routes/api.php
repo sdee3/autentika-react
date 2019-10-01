@@ -33,3 +33,5 @@ Route::delete('/categories/{id}', 'CategoryController@delete');
 
 Route::post('/admin-login', 'BlogController@handleAdminLogin');
 Route::post('/validate-cookie', 'BlogController@validateCookie');
+
+Route::post('/contact', 'EmailController@submitContactForm');

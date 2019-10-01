@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Mail;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class ContactMain extends Mailable
+{
+  use Queueable, SerializesModels;
+
+  /**
+   * The form data field containing the following fields:
+   * - Name
+   * - Email
+   * - Product name
+   * - Message
+   */
+  public $form_data;
+
+  /**
+   * Create a new message instance.
+   *
+   * @return void
+   */
+
+  public function __construct($form_data)
+  {
+    $this->form_data = $form_data;
+  }
+
+  /**
+   * Build the message.
+   *
+   * @return $this
+   */
+  public function build()
+  {
+    return $this->from('noreply@autentikaglobal.com')
+      ->view('emails.emailMain')
+      ->with([
+        'name' => $this->form_data['contact']['firstName'],
+        'email' => $this->form_data['contact']['contactEmail'],
+        'msg' => $this->form_data['contact']['message']
+      ])
+      ->subject("Upit od posetioca: " . $this->form_data['contact']['firstName'] . " " . $this->form_data['contact']['firstName']);
+  }
+}

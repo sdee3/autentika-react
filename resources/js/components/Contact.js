@@ -1,4 +1,5 @@
 import React from 'react';
+import ContactForm from './ContactForm';
 
 export default function Contact() {
 	return (
@@ -8,16 +9,7 @@ export default function Contact() {
 				<section className="contact-sections">
 					<section>
 						<h3>Leave a message</h3>
-						<form>
-							<input placeholder="Your name" type="text" />
-							<input placeholder="Your e-mail address" type="email" />
-							<textarea placeholder="Your message..." rows="12" />
-							<input
-								className="button button--orange"
-								type="submit"
-								value="Submit"
-							/>
-						</form>
+						<ContactForm />
 					</section>
 					<section>
 						<h3>Contact Info</h3>
