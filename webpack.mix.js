@@ -1,4 +1,4 @@
-const mix = require("laravel-mix");
+const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -13,20 +13,21 @@ const mix = require("laravel-mix");
 
 mix.disableNotifications();
 
-mix.react("resources/js/app.js", "public/js")
-    .sass("resources/sass/app.scss", "public/css")
-    .babelConfig({
-        presets: ["@babel/preset-env"],
-        plugins: [
-            "@babel/plugin-syntax-dynamic-import",
-            "@babel/plugin-proposal-class-properties"
-        ]
-    })
-    .sourceMaps();
+mix
+	.react('resources/js/app.js', 'public/js')
+	.sass('resources/sass/app.scss', 'public/css')
+	.babelConfig({
+		presets: ['@babel/preset-env'],
+		plugins: [
+			'@babel/plugin-syntax-dynamic-import',
+			'@babel/plugin-proposal-class-properties',
+		],
+	})
+	.sourceMaps();
 
 mix.webpackConfig({
-    output: {
-        filename: "[name].js",
-        chunkFilename: "js/chunks/[name].js"
-    }
+	output: {
+		filename: '[name].js',
+		chunkFilename: 'js/chunks/[name].js',
+	},
 });
