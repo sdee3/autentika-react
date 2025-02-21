@@ -61,7 +61,11 @@
 
   &__promo {
     background-image: url("/img/autentika-deal.jpg");
-    height: 50vh;
+    height: 35vh;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: darken;
+    background-color: rgba(0, 0, 0, 0.5);
 
     .container {
       color: $text-white;
